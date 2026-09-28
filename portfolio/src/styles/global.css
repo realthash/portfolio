@@ -56,6 +56,31 @@ body {
   width: 100%;
 }
 
+/* Angled section edge (see src/lib/angledEdge.js): the skewed clip cuts the background's top
+   edge, the inner layer un-skews the background, and the line rides the cut. */
+.angled-clip {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.angled-clip__inner {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+
+.angled-clip__line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1.5px;
+}
+
 .hero-pin-wrapper {
   position: sticky;
   top: 0;

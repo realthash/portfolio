@@ -15,28 +15,20 @@
   color: #ffffff;
   padding: calc(clamp(60px, 8vh, 100px) + var(--proj-angle-h)) 0 clamp(120px, 16vh, 200px);
   margin-top: 0;
-  clip-path: polygon(0% 120px, 100% 0px, 100% 100%, 0% 100%);
   overflow: hidden;
   box-sizing: border-box;
   isolation: isolate;
-  will-change: clip-path;
 }
 
-/* Angled decorative hairline along the top cut */
-.projects__angled-border {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: var(--proj-angle-h);
-  pointer-events: none;
-  z-index: 3;
-}
-
-.projects__angled-svg {
-  width: 100%;
-  height: 100%;
-  display: block;
+/* Hairline along the angled top cut (skewed with .angled-clip) */
+.projects__angled-line {
+  background: linear-gradient(
+    to right,
+    rgba(224, 20, 30, 0.9) 0%,
+    rgba(255, 255, 255, 0.45) 30%,
+    rgba(255, 255, 255, 0.2) 70%,
+    rgba(224, 20, 30, 0.5) 100%
+  );
 }
 
 /* Background image layer using background.webp */

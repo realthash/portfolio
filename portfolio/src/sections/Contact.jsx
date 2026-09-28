@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import emailjs from '@emailjs/browser';
 import { contact } from '../data/content.js';
 import { gsap, useGSAP } from '../lib/gsap.js';
+import { animateAngledEdge } from '../lib/angledEdge.js';
 import background from '../assets/background.webp';
 import './Contact.css';
 
@@ -102,7 +103,8 @@ export default function Contact() {
   const titleRef = useRef(null);
   const formCardRef = useRef(null);
   const infoRef = useRef(null);
-  const angledLineRef = useRef(null);
+  const edgeClipRef = useRef(null);
+  const edgeInnerRef = useRef(null);
   const lineRef = useRef(null);
 
   // Form state
@@ -198,46 +200,13 @@ export default function Contact() {
       const el = rootRef.current;
       if (!el) return;
 
-      // 1. Morphing top angled cut: matching Projects and Certifications chevron rhythm
-      const initialAngle = 120;
-      const angleState = { y1: initialAngle };
-
-      gsap.fromTo(
-        el,
-        {
-          clipPath: `polygon(0% ${initialAngle}px, 100% 0px, 100% 100%, 0% 100%)`,
-        },
-        {
-          clipPath: 'polygon(0% 0px, 100% 0px, 100% 100%, 0% 100%)',
-          ease: 'none',
-          scrollTrigger: {
-            trigger: el,
-            start: 'top 20%',
-            end: 'top top',
-            scrub: 1,
-          },
-        },
-      );
-
-      gsap.fromTo(
-        angleState,
-        { y1: initialAngle },
-        {
-          y1: 0,
-          ease: 'none',
-          onUpdate: () => {
-            if (angledLineRef.current) {
-              angledLineRef.current.setAttribute('y1', angleState.y1);
-            }
-          },
-          scrollTrigger: {
-            trigger: el,
-            start: 'top 20%',
-            end: 'top top',
-            scrub: 1,
-          },
-        },
-      );
+      // 1. Angled top cut (left corner low) matching the Projects and Certifications chevron rhythm
+      animateAngledEdge({
+        section: el,
+        clip: edgeClipRef.current,
+        inner: edgeInnerRef.current,
+        lowSide: 'left',
+      });
 
       // Animate horizontal dividing line expanding matching Projects and Certifications
       if (lineRef.current) {
@@ -400,38 +369,16 @@ export default function Contact() {
 
   return (
     <section className="contact" ref={rootRef} id="contact" aria-label="Contact Section">
-      {/* Background with background.webp */}
-      <div
-        className="contact__bg"
-        style={{ '--bg-image': `url(${background})` }}
-        aria-hidden="true"
-      >
-        <div className="contact__bg-glow contact__bg-glow--top" />
-        <div className="contact__bg-glow contact__bg-glow--card" />
-        <div className="contact__bg-pattern" />
-      </div>
-
-      {/* Angled decorative hairline along top cut */}
-      <div className="contact__angled-border" aria-hidden="true">
-        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="contact__angled-svg">
-          <line
-            ref={angledLineRef}
-            x1="0"
-            y1="120"
-            x2="1200"
-            y2="0"
-            stroke="url(#contactAngledGrad)"
-            strokeWidth="1.5"
-          />
-          <defs>
-            <linearGradient id="contactAngledGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#e0141e" stopOpacity="0.8" />
-              <stop offset="35%" stopColor="#e0141e" stopOpacity="0.4" />
-              <stop offset="70%" stopColor="rgba(255,255,255,0.2)" stopOpacity="0.2" />
-              <stop offset="100%" stopColor="#e0141e" stopOpacity="0.5" />
-            </linearGradient>
-          </defs>
-        </svg>
+      {/* Background (background.webp) inside the skewed clip that forms the angled top edge */}
+      <div className="angled-clip" ref={edgeClipRef} aria-hidden="true">
+        <div className="angled-clip__inner" ref={edgeInnerRef}>
+          <div className="contact__bg" style={{ '--bg-image': `url(${background})` }}>
+            <div className="contact__bg-glow contact__bg-glow--top" />
+            <div className="contact__bg-glow contact__bg-glow--card" />
+            <div className="contact__bg-pattern" />
+          </div>
+        </div>
+        <div className="angled-clip__line contact__angled-line" />
       </div>
 
       <div className="contact__wrapper">

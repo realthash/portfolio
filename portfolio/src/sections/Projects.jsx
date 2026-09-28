@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { projects } from '../data/projects.js';
 import { gsap, ScrollTrigger, useGSAP } from '../lib/gsap.js';
 import { useScrollLock } from '../lib/scrollLock.js';
+import { animateAngledEdge } from '../lib/angledEdge.js';
 import background from '../assets/background.webp';
 import './Projects.css';
 
@@ -46,7 +47,8 @@ export default function Projects() {
   const rootRef = useRef(null);
   const trackRef = useRef(null);
   const lineRef = useRef(null);
-  const angledLineRef = useRef(null);
+  const edgeClipRef = useRef(null);
+  const edgeInnerRef = useRef(null);
   const [selectedProject, setSelectedProject] = useState(null);
   const [themeOverrides, setThemeOverrides] = useState({});
   const [viewAll, setViewAll] = useState(false);
@@ -61,46 +63,13 @@ export default function Projects() {
       const el = rootRef.current;
       if (!el) return;
 
-      // Stays fully angled until top reaches 20% from the viewport top; flattens between top 20% and top 0% (top top)
-      const initialAngle = 120;
-      const angleState = { y1: initialAngle };
-
-      gsap.fromTo(
-        el,
-        {
-          clipPath: `polygon(0% ${initialAngle}px, 100% 0px, 100% 100%, 0% 100%)`,
-        },
-        {
-          clipPath: 'polygon(0% 0px, 100% 0px, 100% 100%, 0% 100%)',
-          ease: 'none',
-          scrollTrigger: {
-            trigger: el,
-            start: 'top 20%', // Angled until top reaches 20%
-            end: 'top top',   // Flat beyond this point
-            scrub: 1,
-          },
-        },
-      );
-
-      gsap.fromTo(
-        angleState,
-        { y1: initialAngle },
-        {
-          y1: 0,
-          ease: 'none',
-          onUpdate: () => {
-            if (angledLineRef.current) {
-              angledLineRef.current.setAttribute('y1', angleState.y1);
-            }
-          },
-          scrollTrigger: {
-            trigger: el,
-            start: 'top 20%',
-            end: 'top top',
-            scrub: 1,
-          },
-        },
-      );
+      // Angled top edge (left corner low) that flattens as the section reaches the top
+      animateAngledEdge({
+        section: el,
+        clip: edgeClipRef.current,
+        inner: edgeInnerRef.current,
+        lowSide: 'left',
+      });
 
       // Animate horizontal dividing line expanding
       if (lineRef.current) {
@@ -178,22 +147,12 @@ export default function Projects() {
 
   return (
     <section className="projects" ref={rootRef} id="projects" aria-label="Selected Projects">
-      {/* Background layer using background.webp */}
-      <div className="projects__bg" style={{ '--bg-image': `url(${background})` }} aria-hidden="true" />
-
-      {/* Angled top hairline border */}
-      <div className="projects__angled-border" aria-hidden="true">
-        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="projects__angled-svg">
-          <line ref={angledLineRef} x1="0" y1="120" x2="1200" y2="0" stroke="url(#projAngledGrad)" strokeWidth="1.5" />
-          <defs>
-            <linearGradient id="projAngledGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#e0141e" stopOpacity="0.9" />
-              <stop offset="30%" stopColor="#ffffff" stopOpacity="0.45" />
-              <stop offset="70%" stopColor="#ffffff" stopOpacity="0.2" />
-              <stop offset="100%" stopColor="#e0141e" stopOpacity="0.5" />
-            </linearGradient>
-          </defs>
-        </svg>
+      {/* Background (background.webp) inside the skewed clip that forms the angled top edge */}
+      <div className="angled-clip" ref={edgeClipRef} aria-hidden="true">
+        <div className="angled-clip__inner" ref={edgeInnerRef}>
+          <div className="projects__bg" style={{ '--bg-image': `url(${background})` }} />
+        </div>
+        <div className="angled-clip__line projects__angled-line" />
       </div>
 
       {/* Header matching user image reference */}

@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { certifications } from '../data/certifications.js';
 import { gsap, ScrollTrigger, useGSAP } from '../lib/gsap.js';
 import { useScrollLock } from '../lib/scrollLock.js';
+import { animateAngledEdge } from '../lib/angledEdge.js';
 import './Certifications.css';
 
 function ArrowIcon({ className = '' }) {
@@ -45,7 +46,8 @@ export default function Certifications() {
   const rootRef = useRef(null);
   const trackRef = useRef(null);
   const lineRef = useRef(null);
-  const angledLineRef = useRef(null);
+  const edgeClipRef = useRef(null);
+  const edgeInnerRef = useRef(null);
   const [selectedCert, setSelectedCert] = useState(null);
   const [viewAll, setViewAll] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -59,47 +61,13 @@ export default function Certifications() {
       const el = rootRef.current;
       if (!el) return;
 
-      // SIDE FLIPPING STARTING BAR:
-      // Left side stays at 0px, Right side starts at 120px and flattens to 0px
-      const initialAngle = 120;
-      const angleState = { y2: initialAngle };
-
-      gsap.fromTo(
-        el,
-        {
-          clipPath: `polygon(0% 0px, 100% ${initialAngle}px, 100% 100%, 0% 100%)`,
-        },
-        {
-          clipPath: 'polygon(0% 0px, 100% 0px, 100% 100%, 0% 100%)',
-          ease: 'none',
-          scrollTrigger: {
-            trigger: el,
-            start: 'top 20%', // Angled until top reaches 20%
-            end: 'top top',   // Flat beyond this point
-            scrub: 1,
-          },
-        },
-      );
-
-      gsap.fromTo(
-        angleState,
-        { y2: initialAngle },
-        {
-          y2: 0,
-          ease: 'none',
-          onUpdate: () => {
-            if (angledLineRef.current) {
-              angledLineRef.current.setAttribute('y2', angleState.y2);
-            }
-          },
-          scrollTrigger: {
-            trigger: el,
-            start: 'top 20%',
-            end: 'top top',
-            scrub: 1,
-          },
-        },
-      );
+      // SIDE FLIPPING STARTING BAR: right corner starts low and flattens as the section reaches the top
+      animateAngledEdge({
+        section: el,
+        clip: edgeClipRef.current,
+        inner: edgeInnerRef.current,
+        lowSide: 'right',
+      });
 
       // Animate horizontal dividing line expanding
       if (lineRef.current) {
@@ -161,34 +129,16 @@ export default function Certifications() {
 
   return (
     <section className="certifications" ref={rootRef} id="certifications" aria-label="Certifications & Credentials">
-      {/* Lighter ambient background layers */}
-      <div className="certifications__bg" aria-hidden="true">
-        <div className="certifications__bg-glow certifications__bg-glow--top" />
-        <div className="certifications__bg-glow certifications__bg-glow--bottom" />
-        <div className="certifications__bg-pattern" />
-      </div>
-
-      {/* Side-flipped angled top hairline border */}
-      <div className="certifications__angled-border" aria-hidden="true">
-        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="certifications__angled-svg">
-          <line
-            ref={angledLineRef}
-            x1="0"
-            y1="0"
-            x2="1200"
-            y2="120"
-            stroke="url(#certAngledGrad)"
-            strokeWidth="1.5"
-          />
-          <defs>
-            <linearGradient id="certAngledGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#e0141e" stopOpacity="0.45" />
-              <stop offset="40%" stopColor="#9ca3af" stopOpacity="0.4" />
-              <stop offset="70%" stopColor="#d1d5db" stopOpacity="0.3" />
-              <stop offset="100%" stopColor="#e0141e" stopOpacity="0.9" />
-            </linearGradient>
-          </defs>
-        </svg>
+      {/* Lighter ambient background layers inside the skewed clip that forms the angled top edge */}
+      <div className="angled-clip" ref={edgeClipRef} aria-hidden="true">
+        <div className="angled-clip__inner" ref={edgeInnerRef}>
+          <div className="certifications__bg">
+            <div className="certifications__bg-glow certifications__bg-glow--top" />
+            <div className="certifications__bg-glow certifications__bg-glow--bottom" />
+            <div className="certifications__bg-pattern" />
+          </div>
+        </div>
+        <div className="angled-clip__line certifications__angled-line" />
       </div>
 
       {/* Header following Projects section structure */}
