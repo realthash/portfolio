@@ -1,6 +1,20 @@
 export const certifications = [
   {
     id: '01',
+    title: 'Introduction to DevOps',
+    issuer: 'IBM',
+    subtitle: 'AUTHORIZED BY IBM (COURSERA)',
+    date: 'September 2026',
+    domain: 'coursera.org',
+    link: 'https://www.coursera.org/verify/RQAPHMC1OCEC',
+    image: '/CERTIFICATE_LANDING_PAGE~RQAPHMC1OCEC.jpeg',
+    tags: ['DevOps', 'CI/CD', 'Docker', 'Infrastructure as Code'],
+    description:
+      'Completed Coursera\'s "Introduction to DevOps" course, gaining hands-on experience with Continuous Integration/Continuous Delivery (CI/CD), Infrastructure as Code, and Docker containerization. Learned how to automate deployments, build resilient cloud-native applications, and foster a DevOps culture of collaboration and shared responsibility. Earned a shareable certificate demonstrating foundational DevOps skills applicable to modern software engineering and system reliability.',
+    featured: true,
+  },
+  {
+    id: '02',
     title: 'Hult Prize On-Campus Qualifiers',
     issuer: 'Hult Prize Foundation',
     subtitle: 'HULT PRIZE FOUNDATION',
@@ -14,7 +28,7 @@ export const certifications = [
     featured: true,
   },
   {
-    id: '02',
+    id: '03',
     title: 'IIT Summer School 2.0',
     issuer: 'Informatics Institute of Technology',
     subtitle: 'INFORMATICS INSTITUTE OF TECHNOLOGY',
@@ -28,7 +42,7 @@ export const certifications = [
     featured: true,
   },
   {
-    id: '03',
+    id: '04',
     title: 'AI Fundamentals',
     issuer: 'Google',
     subtitle: 'AUTHORIZED BY GOOGLE (COURSERA)',
@@ -42,7 +56,7 @@ export const certifications = [
     featured: true,
   },
   {
-    id: '04',
+    id: '05',
     title: 'AI for Brainstorming and Planning',
     issuer: 'Google',
     subtitle: 'AUTHORIZED BY GOOGLE (COURSERA)',
