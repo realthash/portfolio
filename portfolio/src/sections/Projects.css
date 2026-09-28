@@ -4,7 +4,7 @@
    ========================================================================== */
 
 :root {
-  --proj-angle-h: clamp(40px, 4vw, 65px);
+  --proj-angle-h: 120px;
 }
 
 .projects {
@@ -14,11 +14,12 @@
   min-height: 100svh;
   color: #ffffff;
   padding: calc(clamp(60px, 8vh, 100px) + var(--proj-angle-h)) 0 clamp(80px, 11vh, 140px);
-  margin-top: calc(-1 * var(--proj-angle-h));
-  clip-path: polygon(0 var(--proj-angle-h), 100% 0, 100% 100%, 0 100%);
+  margin-top: 0;
+  clip-path: polygon(0% 120px, 100% 0px, 100% 100%, 0% 100%);
   overflow: hidden;
   box-sizing: border-box;
   isolation: isolate;
+  will-change: clip-path;
 }
 
 /* Angled decorative hairline along the top cut */

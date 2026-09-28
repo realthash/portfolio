@@ -44,6 +44,7 @@ export default function Projects() {
   const rootRef = useRef(null);
   const trackRef = useRef(null);
   const lineRef = useRef(null);
+  const angledLineRef = useRef(null);
   const [selectedProject, setSelectedProject] = useState(null);
   const [themeOverrides, setThemeOverrides] = useState({});
   const [viewAll, setViewAll] = useState(false);
@@ -52,11 +53,52 @@ export default function Projects() {
   // Maximum index for carousel (showing 3 cards on desktop)
   const maxIndex = Math.max(0, projects.length - 3);
 
-  // GSAP ScrollTrigger entrance animations
+  // GSAP ScrollTrigger entrance & morph animations
   useGSAP(
     () => {
       const el = rootRef.current;
       if (!el) return;
+
+      // Stays fully angled until top reaches 20% from the viewport top; flattens between top 20% and top 0% (top top)
+      const initialAngle = 120;
+      const angleState = { y1: initialAngle };
+
+      gsap.fromTo(
+        el,
+        {
+          clipPath: `polygon(0% ${initialAngle}px, 100% 0px, 100% 100%, 0% 100%)`,
+        },
+        {
+          clipPath: 'polygon(0% 0px, 100% 0px, 100% 100%, 0% 100%)',
+          ease: 'none',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 20%', // Angled until top reaches 20%
+            end: 'top top',   // Flat beyond this point
+            scrub: 1,
+          },
+        },
+      );
+
+      gsap.fromTo(
+        angleState,
+        { y1: initialAngle },
+        {
+          y1: 0,
+          ease: 'none',
+          onUpdate: () => {
+            if (angledLineRef.current) {
+              angledLineRef.current.setAttribute('y1', angleState.y1);
+            }
+          },
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 20%',
+            end: 'top top',
+            scrub: 1,
+          },
+        },
+      );
 
       // Animate horizontal dividing line expanding
       if (lineRef.current) {
@@ -137,8 +179,8 @@ export default function Projects() {
 
       {/* Angled top hairline border */}
       <div className="projects__angled-border" aria-hidden="true">
-        <svg viewBox="0 0 1200 60" preserveAspectRatio="none" className="projects__angled-svg">
-          <line x1="0" y1="60" x2="1200" y2="0" stroke="url(#projAngledGrad)" strokeWidth="1.5" />
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="projects__angled-svg">
+          <line ref={angledLineRef} x1="0" y1="120" x2="1200" y2="0" stroke="url(#projAngledGrad)" strokeWidth="1.5" />
           <defs>
             <linearGradient id="projAngledGrad" x1="0%" y1="0%" x2="100%" y2="0%">
               <stop offset="0%" stopColor="#e0141e" stopOpacity="0.9" />
@@ -309,10 +351,12 @@ export default function Projects() {
           role="dialog"
           aria-modal="true"
           aria-labelledby="modal-title"
+          data-lenis-prevent
         >
           <div
             className="projects__modal"
             onClick={(e) => e.stopPropagation()}
+            data-lenis-prevent
           >
             <button
               type="button"
