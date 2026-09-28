@@ -20,6 +20,13 @@
   box-sizing: border-box;
 }
 
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
 html,
 body {
   margin: 0;
@@ -68,6 +75,12 @@ body {
 .certifications-stack-wrapper {
   position: relative;
   z-index: 20;
+  width: 100%;
+}
+
+.contact-stack-wrapper {
+  position: relative;
+  z-index: 30;
   width: 100%;
 }
 

@@ -2,7 +2,7 @@
 export const hero = {
   role: 'Full-Stack Developer',
   roleSub: 'DevOps Culture',
-  availability: 'Available for projects',
+  availability: 'Available for oppertunities',
   greeting: "Hello, I'm",
   name: 'Thashmika Rathnayake',
   title: 'Full-Stack Developer',
@@ -11,3 +11,20 @@ export const hero = {
   tagline: 'Turning ideas into powerful digital products.',
   skills: ['End-to-End Development', 'Scalable Architecture', 'Responsive Design'],
 };
+
+export const contact = {
+  heading: "Let's Talk",
+  phone: "+94 77 6 47 47 33",
+  email: "work.thashmika@gmail.com",
+  addressTitle: "Address",
+  address: "Narahenpita, Colombo, Sri Lanka",
+  officeHoursTitle: "Office Hours",
+  officeHours: "Monday - Friday 9AM - 5PM",
+  socials: [
+    { label: "GitHub", url: "https://github.com/realthash" },
+    { label: "LinkedIn", url: "https://www.linkedin.com/in/thashmika-rathnayake-69820b353/" },
+    { label: "X.com", url: "https://x.com/" },
+    { label: "Instagram", url: "https://www.instagram.com/itsthashh/" },
+  ],
+};
+
