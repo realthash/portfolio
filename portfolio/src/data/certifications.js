@@ -1,0 +1,58 @@
+export const certifications = [
+  {
+    id: '01',
+    title: 'Hult Prize On-Campus Qualifiers',
+    issuer: 'Hult Prize Foundation',
+    subtitle: 'HULT PRIZE FOUNDATION',
+    date: 'February 2026',
+    domain: 'hultprize.org',
+    link: '/hult.png',
+    image: '/hult.png',
+    tags: ['Social Entrepreneurship', 'Impact Leadership', 'Global Challenges', 'Public Speaking'],
+    description:
+      'The Hult Prize is the world’s largest student-led social entrepreneurship competition. Member of the On-Campus Committee, empowering students to create impactful solutions to global challenges through social entrepreneurship.',
+    featured: true,
+  },
+  {
+    id: '02',
+    title: 'IIT Summer School 2.0',
+    issuer: 'Informatics Institute of Technology',
+    subtitle: 'INFORMATICS INSTITUTE OF TECHNOLOGY',
+    date: 'September 2026',
+    domain: 'iit.ac.lk',
+    link: '/summer-school.jpeg',
+    image: '/summer-school.jpeg',
+    tags: ['Applied AI Tooling', 'Backend Architecture', 'Python Algorithms', 'UI/UX Design'],
+    description:
+      'Completed an intensive software engineering program covering end-to-end modern development practices. Gained practical experience across applied AI tooling, backend and database architecture, Python algorithmic problem-solving, and responsive UI/UX frontend design.',
+    featured: true,
+  },
+  {
+    id: '03',
+    title: 'AI Fundamentals',
+    issuer: 'Google',
+    subtitle: 'AUTHORIZED BY GOOGLE (COURSERA)',
+    date: 'September 2026',
+    domain: 'coursera.org',
+    link: 'https://coursera.org/verify/K9RE0A69NVQB',
+    image: '/CERTIFICATE_LANDING_PAGE~K9RE0A69NVQB.jpeg',
+    tags: ['Generative AI', 'Prompt Engineering', 'AI Agents', 'Responsible AI'],
+    description:
+      'An online course authorized by Google and offered through Coursera. Covers foundational generative AI concepts, prompt engineering frameworks, prompt chaining, AI agents, and responsible AI practices using a human-in-the-loop approach.',
+    featured: true,
+  },
+  {
+    id: '04',
+    title: 'AI for Brainstorming and Planning',
+    issuer: 'Google',
+    subtitle: 'AUTHORIZED BY GOOGLE (COURSERA)',
+    date: 'September 2026',
+    domain: 'coursera.org',
+    link: 'https://www.coursera.org/verify/JU2EWUKB94TJ',
+    image: '/CERTIFICATE_LANDING_PAGE~JU2EWUKB94TJ.jpeg',
+    tags: ['Gemini AI', 'Strategic Planning', 'Decision Frameworks', 'Workback Schedules'],
+    description:
+      'An online course authorized by Google and offered through Coursera. Focuses on transforming abstract ideas into structured execution plans using Gemini, evaluating solutions against decision criteria, uncovering hidden project bottlenecks, and generating actionable workback schedules.',
+    featured: true,
+  },
+];

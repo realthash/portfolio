@@ -3,12 +3,14 @@ import Lenis from 'lenis';
 import 'lenis/dist/lenis.css';
 import Hero from './sections/Hero.jsx';
 import Projects from './sections/Projects.jsx';
+import Certifications from './sections/Certifications.jsx';
 import { gsap, ScrollTrigger, useGSAP } from './lib/gsap.js';
 
 export default function App() {
   const containerRef = useRef(null);
   const heroRef = useRef(null);
   const projectsRef = useRef(null);
+  const certificationsRef = useRef(null);
 
   useEffect(() => {
     // Configure Lenis for a stable, uniform scroll speed across the site
@@ -64,6 +66,9 @@ export default function App() {
       </div>
       <div className="projects-stack-wrapper" ref={projectsRef}>
         <Projects />
+      </div>
+      <div className="certifications-stack-wrapper" ref={certificationsRef}>
+        <Certifications />
       </div>
     </div>
   );
