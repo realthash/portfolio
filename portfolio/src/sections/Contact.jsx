@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import emailjs from '@emailjs/browser';
 import { contact } from '../data/content.js';
 import { gsap, useGSAP } from '../lib/gsap.js';
 import background from '../assets/background.webp';
@@ -114,6 +115,7 @@ export default function Contact() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [statusMessage, setStatusMessage] = useState({ type: '', text: '' });
 
   const activeEmail = contact.email;
   const activePhone = contact.phone;
@@ -124,16 +126,61 @@ export default function Contact() {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
+    setStatusMessage({ type: '', text: '' });
 
-    setTimeout(() => {
+    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+    if (!serviceId || !templateId || !publicKey) {
+      // Configuration reminder if env variables are not yet provided
+      console.warn('EmailJS environment variables are missing. Please check .env file.');
+      setTimeout(() => {
+        setSubmitting(false);
+        setSubmitted(true);
+        setStatusMessage({
+          type: 'info',
+          text: 'Demo mode: Please configure your EmailJS credentials in .env to receive real emails.'
+        });
+        setForm({ name: '', email: '', company: '', message: '' });
+        setTimeout(() => setSubmitted(false), 5000);
+      }, 1000);
+      return;
+    }
+
+    try {
+      await emailjs.send(
+        serviceId,
+        templateId,
+        {
+          from_name: form.name,
+          from_email: form.email,
+          company: form.company,
+          message: form.message,
+          to_email: activeEmail,
+        },
+        publicKey
+      );
+
       setSubmitting(false);
       setSubmitted(true);
+      setStatusMessage({ type: 'success', text: 'Message sent successfully! I will get back to you soon.' });
       setForm({ name: '', email: '', company: '', message: '' });
-      setTimeout(() => setSubmitted(false), 5000);
-    }, 1200);
+      setTimeout(() => {
+        setSubmitted(false);
+        setStatusMessage({ type: '', text: '' });
+      }, 6000);
+    } catch (error) {
+      console.error('EmailJS error:', error);
+      setSubmitting(false);
+      setStatusMessage({
+        type: 'error',
+        text: 'Failed to send message. Please email directly at ' + activeEmail
+      });
+    }
   };
 
   const handleCopyEmail = (e) => {
@@ -504,6 +551,16 @@ export default function Contact() {
                     <CharStaggerText text="Send Message" />
                   )}
                 </button>
+
+                {/* Status or Alert feedback message */}
+                {statusMessage.text && (
+                  <div
+                    className={`contact__status-alert contact__status-alert--${statusMessage.type}`}
+                    role="alert"
+                  >
+                    {statusMessage.text}
+                  </div>
+                )}
               </form>
             </div>
           </div>

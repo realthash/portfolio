@@ -383,6 +383,46 @@ p.char-stagger-root {
   }
 }
 
+/* Form Status Alerts */
+.contact__status-alert {
+  margin-top: 14px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 13.5px;
+  line-height: 1.45;
+  text-align: center;
+  animation: contactAlertFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.contact__status-alert--success {
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #059669;
+}
+
+.contact__status-alert--error {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #dc2626;
+}
+
+.contact__status-alert--info {
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  color: #d97706;
+}
+
+@keyframes contactAlertFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* ---------- Right Column: Contact Details ---------- */
 .contact__info-col {
   display: flex;
