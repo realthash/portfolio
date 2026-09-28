@@ -136,18 +136,13 @@ export default function Contact() {
     const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
     if (!serviceId || !templateId || !publicKey) {
-      // Configuration reminder if env variables are not yet provided
-      console.warn('EmailJS environment variables are missing. Please check .env file.');
-      setTimeout(() => {
-        setSubmitting(false);
-        setSubmitted(true);
-        setStatusMessage({
-          type: 'info',
-          text: 'Demo mode: Please configure your EmailJS credentials in .env to receive real emails.'
-        });
-        setForm({ name: '', email: '', company: '', message: '' });
-        setTimeout(() => setSubmitted(false), 5000);
-      }, 1000);
+      // Never fake a success: keep the visitor's message and point them to direct email instead
+      console.error('EmailJS is not configured: set VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID and VITE_EMAILJS_PUBLIC_KEY.');
+      setSubmitting(false);
+      setStatusMessage({
+        type: 'error',
+        text: 'The contact form is unavailable right now. Please email directly at ' + activeEmail
+      });
       return;
     }
 
@@ -158,11 +153,16 @@ export default function Contact() {
         {
           from_name: form.name,
           from_email: form.email,
+          reply_to: form.email,
           company: form.company,
           message: form.message,
           to_email: activeEmail,
         },
-        publicKey
+        {
+          publicKey,
+          // Client-side throttle: one message per 10s from this browser to deter accidental double sends / spam
+          limitRate: { id: 'contact-form', throttle: 10000 },
+        }
       );
 
       setSubmitting(false);
@@ -178,7 +178,9 @@ export default function Contact() {
       setSubmitting(false);
       setStatusMessage({
         type: 'error',
-        text: 'Failed to send message. Please email directly at ' + activeEmail
+        text: error?.status === 429
+          ? 'Please wait a few seconds before sending another message.'
+          : 'Failed to send message. Please email directly at ' + activeEmail
       });
     }
   };
