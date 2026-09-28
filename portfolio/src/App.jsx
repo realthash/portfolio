@@ -45,6 +45,33 @@ export default function App() {
     };
   }, []);
 
+  // On mobile the stacked hero is taller than the viewport. Let the wrapper grow to fit it and
+  // offset the sticky top so the hero scrolls fully into view before pinning — otherwise its
+  // lower half overflows the 100svh wrapper and shows through the next section's angled cut.
+  useEffect(() => {
+    const wrapper = heroRef.current;
+    const hero = wrapper?.firstElementChild;
+    if (!hero) return;
+
+    const update = () => {
+      wrapper.style.height = `${hero.offsetHeight}px`;
+      wrapper.style.top = `${Math.min(0, window.innerHeight - hero.offsetHeight)}px`;
+      ScrollTrigger.refresh();
+    };
+
+    const observer = new ResizeObserver(update);
+    observer.observe(hero);
+    window.addEventListener('resize', update);
+    update();
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', update);
+      wrapper.style.height = '';
+      wrapper.style.top = '';
+    };
+  }, []);
+
   useGSAP(
     () => {
       // Smooth depth parallax on pinned hero as projects section slides over it

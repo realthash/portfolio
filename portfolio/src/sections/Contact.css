@@ -641,14 +641,8 @@ p.char-stagger-root {
 }
 
 @media (max-width: 640px) {
-  :root {
-    --contact-angle-h: 70px;
-  }
-
-  .contact {
-    clip-path: polygon(0% 70px, 100% 0px, 100% 100%, 0% 100%);
-  }
-
+  /* Keep --contact-angle-h at 120px: the GSAP clip-path morph in Contact.jsx starts at a
+     120px cut, so a smaller overlap here would leave a see-through band under the wedge. */
   .contact__card {
     border-radius: 20px;
     padding: 24px 20px;
