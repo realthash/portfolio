@@ -1,0 +1,50 @@
+:root {
+  --c-bg: #0a0506;
+  --c-red: #e0141e;
+  --c-red-soft: #c3121b;
+  --c-text: #ffffff;
+  --c-muted: rgba(255, 255, 255, 0.72);
+  --c-line: rgba(255, 255, 255, 0.12);
+
+  --f-display: 'Anton', 'Bebas Neue', Impact, sans-serif;
+  --f-script: 'Mrs Saint Delafield', 'Brush Script MT', cursive;
+  --f-body: 'Poppins', system-ui, sans-serif;
+
+  --gutter: clamp(16px, 4.5vw, 72px);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  background: var(--c-bg);
+  color: var(--c-text);
+  font-family: var(--f-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+h1,
+p,
+ul {
+  margin: 0;
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+}
