@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { certifications } from '../data/certifications.js';
 import { gsap, ScrollTrigger, useGSAP } from '../lib/gsap.js';
+import { useScrollLock } from '../lib/scrollLock.js';
 import './Certifications.css';
 
 function ArrowIcon({ className = '' }) {
@@ -137,6 +139,8 @@ export default function Certifications() {
     },
     { scope: rootRef, dependencies: [viewAll] },
   );
+
+  useScrollLock(Boolean(selectedCert));
 
   // Close modal on Escape key
   useEffect(() => {
@@ -332,8 +336,9 @@ export default function Certifications() {
         </div>
       </div>
 
-      {/* Certificate Detail Modal */}
-      {selectedCert && (
+      {/* Certificate Detail Modal — portaled to <body> so it isn't clipped by
+          this section's clip-path / stacking context */}
+      {selectedCert && createPortal(
         <div
           className="certifications__modal-backdrop"
           onClick={() => setSelectedCert(null)}
@@ -373,6 +378,7 @@ export default function Certifications() {
                 src={selectedCert.image}
                 alt={selectedCert.title}
                 className="certifications__modal-img"
+                decoding="async"
               />
             </div>
 
@@ -413,7 +419,8 @@ export default function Certifications() {
               </div>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body,
       )}
     </section>
   );
