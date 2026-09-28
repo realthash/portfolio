@@ -54,7 +54,6 @@
 .certifications__bg-glow {
   position: absolute;
   border-radius: 50%;
-  filter: blur(80px);
   opacity: 0.6;
   pointer-events: none;
 }

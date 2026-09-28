@@ -22,3 +22,13 @@ export function useScrollLock(active) {
     };
   }, [active]);
 }
+
+// Smooth-scroll to a section through Lenis, falling back to native scrolling.
+// `target` is a selector or a pixel offset.
+export function scrollToTarget(target) {
+  const dest = typeof target === 'string' ? document.querySelector(target) : target;
+  if (dest == null) return;
+  if (lenisInstance) lenisInstance.scrollTo(dest, { duration: 1.4 });
+  else if (typeof dest === 'number') window.scrollTo({ top: dest, behavior: 'smooth' });
+  else dest.scrollIntoView({ behavior: 'smooth' });
+}

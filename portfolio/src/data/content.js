@@ -2,7 +2,7 @@
 export const hero = {
   role: 'Full-Stack Developer',
   roleSub: 'DevOps Culture',
-  availability: 'Available for oppertunities',
+  availability: 'Available for opportunities',
   greeting: "Hello, I'm",
   name: 'Thashmika Rathnayake',
   title: 'Full-Stack Developer',
@@ -10,6 +10,16 @@ export const hero = {
   location: 'Based in Sri Lanka',
   tagline: 'Turning ideas into powerful digital products.',
   skills: ['End-to-End Development', 'Scalable Architecture', 'Responsive Design'],
+  nav: [
+    { label: 'Home', href: '#top' },
+    { label: 'Projects', href: '#projects' },
+    { label: 'Certifications', href: '#certifications' },
+    { label: 'Contact', href: '#contact' },
+  ],
+  hireCard: {
+    title: 'Meet the Creator',
+    name: 'Thashmika Rathnayake',
+  },
 };
 
 export const contact = {

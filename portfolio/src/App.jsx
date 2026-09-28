@@ -87,6 +87,15 @@ export default function App() {
           scrub: 1,
         },
       });
+
+      // Once Projects fully covers the sticky hero, stop painting it so the browser isn't
+      // compositing a hidden full-screen layer for the rest of the page.
+      ScrollTrigger.create({
+        trigger: projectsRef.current,
+        start: 'top top',
+        onEnter: () => gsap.set(heroRef.current, { visibility: 'hidden' }),
+        onLeaveBack: () => gsap.set(heroRef.current, { visibility: 'visible' }),
+      });
     },
     { scope: containerRef },
   );

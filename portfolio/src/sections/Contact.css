@@ -57,7 +57,6 @@
 .contact__bg-glow {
   position: absolute;
   border-radius: 50%;
-  filter: blur(100px);
   pointer-events: none;
   opacity: 0.35;
 }
@@ -214,9 +213,10 @@ p.char-stagger-root {
   display: inline-block;
 }
 
+/* No will-change here: one GPU layer per character made fast scrolling into Contact janky.
+   GSAP promotes each char to 3D only while its tween runs. */
 .char-stagger-char {
   display: inline-block;
-  will-change: transform, opacity;
 }
 
 /* ---------- 2-Column Grid matching reference image ---------- */

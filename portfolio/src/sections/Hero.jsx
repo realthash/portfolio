@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { gsap, SplitText, useGSAP } from '../lib/gsap.js';
 import { hero } from '../data/content.js';
+import { scrollToTarget } from '../lib/scrollLock.js';
 import background from '../assets/background.webp';
 import portfolioWord from '../assets/portfolio-word.webp';
 import portrait from '../assets/hero-portrait.webp';
@@ -21,6 +22,22 @@ function Pin() {
       <circle cx="12" cy="10" r="2.6" />
     </svg>
   );
+}
+
+function ArrowUpRight() {
+  return (
+    <svg className="hero__hire-arrow" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M7 17 17 7M9 7h8v8" />
+    </svg>
+  );
+}
+
+// Route in-page links through Lenis so they share the site's smooth scroll.
+function handleAnchorClick(event) {
+  const href = event.currentTarget.getAttribute('href');
+  if (!href?.startsWith('#')) return;
+  event.preventDefault();
+  scrollToTarget(href === '#top' ? 0 : href);
 }
 
 const SCRAMBLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&*<>/';
@@ -75,7 +92,8 @@ export default function Hero() {
           .from('.hero__word', { autoAlpha: 0, yPercent: 12, scale: 1.04, duration: 1.5 }, 0.15)
           .from('.hero__portrait', { autoAlpha: 0, y: 70, duration: 1.4 }, 0.35)
           .from('.hero__rule', { scaleX: 0, transformOrigin: 'left center', duration: 1.2, ease: 'power2.inOut' }, 0.5)
-          .from('.hero__top .hero__spark', { autoAlpha: 0, rotate: -90, duration: 0.8 }, 0.9)
+          .from('.hero__nav li', { autoAlpha: 0, y: -12, stagger: 0.08, duration: 0.8 }, 0.6)
+          .from('.hero__hire', { autoAlpha: 0, x: 30, duration: 1 }, 0.8)
           // Handwriting wipe: clip from left to right; negative insets leave room for script swashes.
           .fromTo(
             '.hero__hello',
@@ -107,10 +125,36 @@ export default function Hero() {
           <span className="hero__role-main js-scramble">{hero.role}</span>
           <span className="hero__role-sub js-scramble">{hero.roleSub}</span>
         </p>
-        <p className="hero__status">
-          <span className="js-scramble">{hero.availability}</span>
-          <Sparkle className="hero__spark" />
-        </p>
+
+        <nav className="hero__nav" aria-label="Primary">
+          <ol>
+            {hero.nav.map((item, i) => (
+              <li key={item.href}>
+                <a className="hero__nav-link" href={item.href} onClick={handleAnchorClick}>
+                  {item.label}
+                </a>
+                <span className="hero__nav-index" aria-hidden="true">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+              </li>
+            ))}
+          </ol>
+        </nav>
+
+        <a className="hero__hire" href="#contact" onClick={handleAnchorClick}>
+          <span className="hero__hire-media">
+            <img src="/profile_icon.jpg" alt="" />
+          </span>
+          <span className="hero__hire-body">
+            <span className="hero__hire-title">{hero.hireCard.title}</span>
+            <span className="hero__hire-name">{hero.hireCard.name}</span>
+            <span className="hero__hire-status">
+              <span className="hero__hire-dot" aria-hidden="true" />
+              {hero.availability}
+            </span>
+          </span>
+          <ArrowUpRight />
+        </a>
       </header>
       <div className="hero__rule" aria-hidden="true" />
 
