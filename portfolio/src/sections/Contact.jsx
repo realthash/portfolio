@@ -118,6 +118,7 @@ export default function Contact() {
   const [statusMessage, setStatusMessage] = useState({ type: '', text: '' });
 
   const activeEmail = contact.email;
+  const [emailUser = '', emailDomain = ''] = (activeEmail || '').split('@');
   const activePhone = contact.phone;
   const activeAddress = contact.address;
 
@@ -576,7 +577,12 @@ export default function Contact() {
               </a>
               <div className="contact__email-row">
                 <a href={`mailto:${activeEmail}`} className="contact__email" title="Send an email">
-                  <CharStaggerText text={activeEmail} />
+                  <span className="contact__email-user">
+                    <CharStaggerText text={emailUser} />
+                  </span>
+                  <span className="contact__email-domain">
+                    <CharStaggerText text={`@${emailDomain}`} />
+                  </span>
                 </a>
                 <button
                   type="button"
