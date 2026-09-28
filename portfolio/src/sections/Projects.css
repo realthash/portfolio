@@ -3,20 +3,39 @@
    Matching the reference image with stacking context & smooth scroll
    ========================================================================== */
 
+:root {
+  --proj-angle-h: clamp(40px, 4vw, 65px);
+}
+
 .projects {
   position: relative;
   z-index: 10;
   width: 100%;
   min-height: 100svh;
   color: #ffffff;
-  padding: clamp(60px, 9vh, 120px) 0 clamp(80px, 11vh, 140px);
-  box-shadow: 0 -30px 70px rgba(0, 0, 0, 0.85);
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
-  border-top-left-radius: clamp(16px, 2.5vw, 32px);
-  border-top-right-radius: clamp(16px, 2.5vw, 32px);
+  padding: calc(clamp(60px, 8vh, 100px) + var(--proj-angle-h)) 0 clamp(80px, 11vh, 140px);
+  margin-top: calc(-1 * var(--proj-angle-h));
+  clip-path: polygon(0 var(--proj-angle-h), 100% 0, 100% 100%, 0 100%);
   overflow: hidden;
   box-sizing: border-box;
   isolation: isolate;
+}
+
+/* Angled decorative hairline along the top cut */
+.projects__angled-border {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--proj-angle-h);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.projects__angled-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 /* Background image layer using background.webp */
@@ -60,13 +79,11 @@
 .projects__line {
   flex: 1;
   height: 1px;
-  background: linear-gradient(
-    90deg,
-    rgba(224, 20, 30, 0.4) 0%,
-    rgba(255, 255, 255, 0.25) 30%,
-    rgba(255, 255, 255, 0.15) 80%,
-    transparent 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(224, 20, 30, 0.4) 0%,
+      rgba(255, 255, 255, 0.25) 30%,
+      rgba(255, 255, 255, 0.15) 80%,
+      transparent 100%);
   margin: 0 clamp(16px, 3vw, 48px);
   transform-origin: left center;
 }
@@ -276,9 +293,17 @@
   display: inline-block;
 }
 
-.dot--red { background: #ef4444; }
-.dot--yellow { background: #f59e0b; }
-.dot--green { background: #10b981; }
+.dot--red {
+  background: #ef4444;
+}
+
+.dot--yellow {
+  background: #f59e0b;
+}
+
+.dot--green {
+  background: #10b981;
+}
 
 .projects__frame-url {
   font-size: 10px;
@@ -478,6 +503,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -503,6 +529,7 @@
     opacity: 0;
     transform: translateY(24px) scale(0.97);
   }
+
   to {
     opacity: 1;
     transform: translateY(0) scale(1);

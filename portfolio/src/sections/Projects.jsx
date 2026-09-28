@@ -135,6 +135,21 @@ export default function Projects() {
       {/* Background layer using background.webp */}
       <div className="projects__bg" style={{ '--bg-image': `url(${background})` }} aria-hidden="true" />
 
+      {/* Angled top hairline border */}
+      <div className="projects__angled-border" aria-hidden="true">
+        <svg viewBox="0 0 1200 60" preserveAspectRatio="none" className="projects__angled-svg">
+          <line x1="0" y1="60" x2="1200" y2="0" stroke="url(#projAngledGrad)" strokeWidth="1.5" />
+          <defs>
+            <linearGradient id="projAngledGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#e0141e" stopOpacity="0.9" />
+              <stop offset="30%" stopColor="#ffffff" stopOpacity="0.45" />
+              <stop offset="70%" stopColor="#ffffff" stopOpacity="0.2" />
+              <stop offset="100%" stopColor="#e0141e" stopOpacity="0.5" />
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+
       {/* Header matching user image reference */}
       <div className="projects__header-wrap">
         <div className="projects__header">
