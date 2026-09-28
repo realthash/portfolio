@@ -491,8 +491,8 @@
   position: fixed;
   inset: 0;
   z-index: 1000;
-  background: rgba(5, 2, 3, 0.82);
-  backdrop-filter: blur(12px);
+  background: rgba(5, 2, 3, 0.86);
+  backdrop-filter: blur(6px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -516,6 +516,7 @@
   max-width: 680px;
   max-height: 90vh;
   overflow-y: auto;
+  overscroll-behavior: contain;
   background: #121013;
   color: #ffffff;
   border: 1px solid rgba(255, 255, 255, 0.14);

@@ -6,6 +6,7 @@ import Projects from './sections/Projects.jsx';
 import Certifications from './sections/Certifications.jsx';
 import Contact from './sections/Contact.jsx';
 import { gsap, ScrollTrigger, useGSAP } from './lib/gsap.js';
+import { setLenis } from './lib/scrollLock.js';
 
 export default function App() {
   const containerRef = useRef(null);
@@ -25,6 +26,7 @@ export default function App() {
       wheelMultiplier: 1,
       touchMultiplier: 1.5,
     });
+    setLenis(lenis);
 
     // Sync Lenis scroll events with GSAP ScrollTrigger
     lenis.on('scroll', ScrollTrigger.update);
@@ -38,6 +40,7 @@ export default function App() {
 
     return () => {
       gsap.ticker.remove(tickerUpdate);
+      setLenis(null);
       lenis.destroy();
     };
   }, []);

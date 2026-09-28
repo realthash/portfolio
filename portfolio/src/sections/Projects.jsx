@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { projects } from '../data/projects.js';
 import { gsap, ScrollTrigger, useGSAP } from '../lib/gsap.js';
+import { useScrollLock } from '../lib/scrollLock.js';
 import background from '../assets/background.webp';
 import './Projects.css';
 
@@ -138,6 +140,8 @@ export default function Projects() {
     },
     { scope: rootRef, dependencies: [viewAll] },
   );
+
+  useScrollLock(Boolean(selectedProject));
 
   // Close modal on Escape key
   useEffect(() => {
@@ -343,8 +347,9 @@ export default function Projects() {
         </div>
       </div>
 
-      {/* Project Detail Modal */}
-      {selectedProject && (
+      {/* Project Detail Modal — portaled to <body> so it isn't trapped under
+          later sections by this section's stacking context and clip-path */}
+      {selectedProject && createPortal(
         <div
           className="projects__modal-backdrop"
           onClick={() => setSelectedProject(null)}
@@ -380,6 +385,7 @@ export default function Projects() {
                 src={getCurrentImage(selectedProject)}
                 alt={selectedProject.title}
                 className="projects__modal-img"
+                decoding="async"
               />
             </div>
 
@@ -422,7 +428,8 @@ export default function Projects() {
               </div>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body,
       )}
     </section>
   );
