@@ -19,6 +19,7 @@ export const hero = {
   hireCard: {
     title: 'Meet the Creator',
     name: 'Thashmika Rathnayake',
+    cta: "Let's work together →",
   },
 };
 

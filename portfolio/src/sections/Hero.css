@@ -26,7 +26,7 @@
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: clamp(16px, 2vw, 32px);
-  padding-top: clamp(20px, 4vh, 40px);
+  padding-top: clamp(10px, 1.8vh, 18px);
   font-size: clamp(11px, 0.95vw, 14px);
   font-weight: 500;
   letter-spacing: 0.04em;
@@ -49,7 +49,7 @@
   padding: 0;
   list-style: none;
   display: flex;
-  gap: clamp(20px, 4vw, 72px);
+  gap: clamp(16px, 3.2vw, 72px);
 }
 
 .hero__nav li {
@@ -106,10 +106,10 @@
   display: flex;
   align-items: stretch;
   gap: 12px;
-  width: min(100%, 330px);
-  padding: 6px;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.94);
+  width: min(100%, 340px);
+  padding: 5px;
+  border-radius: 8px;
+  background: #f4f4f4;
   color: #111;
   text-decoration: none;
   text-transform: none;
@@ -131,10 +131,10 @@
 
 .hero__hire-media {
   flex: none;
-  width: 64px;
-  height: 64px;
+  width: 72px;
+  height: 72px;
   overflow: hidden;
-  border-radius: 6px;
+  border-radius: 4px;
 }
 
 .hero__hire-media img {
@@ -154,60 +154,119 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  line-height: 1.3;
+  justify-content: space-between;
+  padding-block: 2px;
 }
 
 .hero__hire-title {
-  font-size: clamp(14px, 1.15vw, 17px);
-  font-weight: 600;
-  margin-bottom: 4px;
+  font-size: clamp(16px, 1.35vw, 20px);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+.hero__hire-meta {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.3;
 }
 
 .hero__hire-name {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
+/* ---------- Live availability status ---------- */
 .hero__hire-status {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 11px;
-  color: #6b6b6b;
+  gap: 7px;
+  font-size: clamp(11px, 0.85vw, 12.5px);
+  color: #6f6f6f;
 }
 
+/* Solid dot with an expanding "live" ring */
 .hero__hire-dot {
-  width: 6px;
-  height: 6px;
+  position: relative;
+  flex: none;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   background: #1fbf5c;
-  box-shadow: 0 0 0 3px rgba(31, 191, 92, 0.2);
 }
 
-.hero__hire-arrow {
+.hero__hire-dot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #1fbf5c;
+  animation: hero-hire-ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes hero-hire-ping {
+  75%,
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+/* Two stacked lines in a one-line window; hover slides the CTA up into view */
+.hero__hire-swap {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  height: 1.3em;
+  overflow: hidden;
+  line-height: 1.3;
+}
+
+.hero__hire-swap > span {
+  flex: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: transform 0.5s var(--ease-out);
+}
+
+.hero__hire-swap > span:last-child {
+  color: var(--c-red);
+  font-weight: 500;
+}
+
+.hero__hire:hover .hero__hire-swap > span,
+.hero__hire:focus-visible .hero__hire-swap > span {
+  transform: translateY(-100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__hire-dot::after {
+    animation: none;
+  }
+}
+
+.hero__hire-mark {
   flex: none;
   align-self: flex-start;
   width: 16px;
   height: 16px;
-  margin: 4px 4px 0 0;
-  fill: none;
-  stroke: #111;
-  stroke-width: 2.2;
-  transition: transform 0.4s var(--ease-out), stroke 0.3s;
+  margin: 6px 8px 0 0;
+  fill: #111;
+  transition: transform 0.4s var(--ease-out), fill 0.3s;
 }
 
-.hero__hire:hover .hero__hire-arrow {
+.hero__hire:hover .hero__hire-mark {
   transform: translate(2px, -2px);
-  stroke: var(--c-red);
+  fill: var(--c-red);
 }
 
 .hero__rule {
   position: absolute;
-  top: calc(clamp(20px, 4vh, 40px) + 90px);
+  top: calc(clamp(10px, 1.8vh, 18px) + 90px);
   left: var(--gutter);
   right: var(--gutter);
   z-index: 3;
@@ -428,17 +487,23 @@
   }
 
   .hero__hire-media {
-    width: 48px;
-    height: 48px;
+    width: 52px;
+    height: 52px;
   }
 
   .hero__hire-title {
-    font-size: 13px;
-    margin-bottom: 2px;
+    font-size: 14px;
   }
 
+  .hero__hire-name,
   .hero__hire-status {
-    display: none;
+    font-size: 11px;
+  }
+
+  .hero__hire-mark {
+    width: 12px;
+    height: 12px;
+    margin: 4px 4px 0 0;
   }
 
   .hero__nav {

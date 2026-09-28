@@ -24,10 +24,11 @@ function Pin() {
   );
 }
 
-function ArrowUpRight() {
+function PixelMark() {
   return (
-    <svg className="hero__hire-arrow" viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M7 17 17 7M9 7h8v8" />
+    <svg className="hero__hire-mark" viewBox="0 0 16 16" aria-hidden="true">
+      <rect x="1" y="8" width="6" height="6" />
+      <rect x="7" y="2" width="8" height="8" />
     </svg>
   );
 }
@@ -147,13 +148,18 @@ export default function Hero() {
           </span>
           <span className="hero__hire-body">
             <span className="hero__hire-title">{hero.hireCard.title}</span>
-            <span className="hero__hire-name">{hero.hireCard.name}</span>
-            <span className="hero__hire-status">
-              <span className="hero__hire-dot" aria-hidden="true" />
-              {hero.availability}
+            <span className="hero__hire-meta">
+              <span className="hero__hire-name">{hero.hireCard.name}</span>
+              <span className="hero__hire-status">
+                <span className="hero__hire-dot" aria-hidden="true" />
+                <span className="hero__hire-swap">
+                  <span>{hero.availability}</span>
+                  <span aria-hidden="true">{hero.hireCard.cta}</span>
+                </span>
+              </span>
             </span>
           </span>
-          <ArrowUpRight />
+          <PixelMark />
         </a>
       </header>
       <div className="hero__rule" aria-hidden="true" />
