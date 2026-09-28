@@ -131,9 +131,9 @@ export default function Contact() {
     setSubmitting(true);
     setStatusMessage({ type: '', text: '' });
 
-    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+    const serviceId = import.meta.env.EMAILJS_SERVICE_ID;
+    const templateId = import.meta.env.EMAILJS_TEMPLATE_ID;
+    const publicKey = import.meta.env.EMAILJS_PUBLIC_KEY;
 
     if (!serviceId || !templateId || !publicKey) {
       // Never fake a success: keep the visitor's message and point them to direct email instead
