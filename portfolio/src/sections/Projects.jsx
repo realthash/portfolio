@@ -303,7 +303,7 @@ export default function Projects() {
                       <img
                         src={imgSrc}
                         alt={`${proj.title} preview`}
-                        className={`projects__img ${imgSrc.endsWith('.svg') || imgSrc.includes('logo') || imgSrc.includes('robot') ? 'projects__img--contain' : 'projects__img--cover'}`}
+                        className={`projects__img ${imgSrc.endsWith('.svg') ? 'projects__img--contain' : 'projects__img--cover'}`}
                         loading="lazy"
                       />
                       <div className="projects__preview-overlay">
