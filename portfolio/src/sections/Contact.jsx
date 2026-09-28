@@ -131,13 +131,13 @@ export default function Contact() {
     setSubmitting(true);
     setStatusMessage({ type: '', text: '' });
 
-    const serviceId = import.meta.env.EMAILJS_SERVICE_ID;
-    const templateId = import.meta.env.EMAILJS_TEMPLATE_ID;
-    const publicKey = import.meta.env.EMAILJS_PUBLIC_KEY;
+    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC;
 
     if (!serviceId || !templateId || !publicKey) {
       // Never fake a success: keep the visitor's message and point them to direct email instead
-      console.error('EmailJS is not configured: set VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID and VITE_EMAILJS_PUBLIC_KEY.');
+      console.error('EmailJS is not configured: set variables.');
       setSubmitting(false);
       setStatusMessage({
         type: 'error',
