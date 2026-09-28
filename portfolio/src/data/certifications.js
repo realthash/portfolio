@@ -7,7 +7,7 @@ export const certifications = [
     date: 'September 2026',
     domain: 'coursera.org',
     link: 'https://www.coursera.org/verify/RQAPHMC1OCEC',
-    image: '/CERTIFICATE_LANDING_PAGE~RQAPHMC1OCEC.jpeg',
+    image: '/CERTIFICATE_LANDING_PAGE~RQAPHMC1OCEC.webp',
     tags: ['DevOps', 'CI/CD', 'Docker', 'Infrastructure as Code'],
     description:
       'Completed Coursera\'s "Introduction to DevOps" course, gaining hands-on experience with Continuous Integration/Continuous Delivery (CI/CD), Infrastructure as Code, and Docker containerization. Learned how to automate deployments, build resilient cloud-native applications, and foster a DevOps culture of collaboration and shared responsibility. Earned a shareable certificate demonstrating foundational DevOps skills applicable to modern software engineering and system reliability.',
@@ -20,8 +20,8 @@ export const certifications = [
     subtitle: 'HULT PRIZE FOUNDATION',
     date: 'February 2026',
     domain: 'hultprize.org',
-    link: '/hult.png',
-    image: '/hult.png',
+    link: '/hult.webp',
+    image: '/hult.webp',
     tags: ['Social Entrepreneurship', 'Impact Leadership', 'Global Challenges', 'Public Speaking'],
     description:
       'The Hult Prize is the world’s largest student-led social entrepreneurship competition. Member of the On-Campus Committee, empowering students to create impactful solutions to global challenges through social entrepreneurship.',
@@ -34,8 +34,8 @@ export const certifications = [
     subtitle: 'INFORMATICS INSTITUTE OF TECHNOLOGY',
     date: 'September 2026',
     domain: 'iit.ac.lk',
-    link: '/summer-school.jpeg',
-    image: '/summer-school.jpeg',
+    link: '/summer-school.webp',
+    image: '/summer-school.webp',
     tags: ['Applied AI Tooling', 'Backend Architecture', 'Python Algorithms', 'UI/UX Design'],
     description:
       'Completed an intensive software engineering program covering end-to-end modern development practices. Gained practical experience across applied AI tooling, backend and database architecture, Python algorithmic problem-solving, and responsive UI/UX frontend design.',
@@ -49,7 +49,7 @@ export const certifications = [
     date: 'September 2026',
     domain: 'coursera.org',
     link: 'https://coursera.org/verify/K9RE0A69NVQB',
-    image: '/CERTIFICATE_LANDING_PAGE~K9RE0A69NVQB.jpeg',
+    image: '/CERTIFICATE_LANDING_PAGE~K9RE0A69NVQB.webp',
     tags: ['Generative AI', 'Prompt Engineering', 'AI Agents', 'Responsible AI'],
     description:
       'An online course authorized by Google and offered through Coursera. Covers foundational generative AI concepts, prompt engineering frameworks, prompt chaining, AI agents, and responsible AI practices using a human-in-the-loop approach.',
@@ -63,7 +63,7 @@ export const certifications = [
     date: 'September 2026',
     domain: 'coursera.org',
     link: 'https://www.coursera.org/verify/JU2EWUKB94TJ',
-    image: '/CERTIFICATE_LANDING_PAGE~JU2EWUKB94TJ.jpeg',
+    image: '/CERTIFICATE_LANDING_PAGE~JU2EWUKB94TJ.webp',
     tags: ['Gemini AI', 'Strategic Planning', 'Decision Frameworks', 'Workback Schedules'],
     description:
       'An online course authorized by Google and offered through Coursera. Focuses on transforming abstract ideas into structured execution plans using Gemini, evaluating solutions against decision criteria, uncovering hidden project bottlenecks, and generating actionable workback schedules.',

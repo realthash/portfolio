@@ -291,6 +291,7 @@ export default function Certifications() {
                       alt={`${cert.title} credential`}
                       className="certifications__img"
                       loading="lazy"
+                      decoding="async"
                     />
                     <div className="certifications__preview-overlay">
                       <span className="certifications__quick-view">Inspect Credential</span>

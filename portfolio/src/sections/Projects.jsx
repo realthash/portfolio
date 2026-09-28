@@ -305,6 +305,7 @@ export default function Projects() {
                         alt={`${proj.title} preview`}
                         className={`projects__img ${imgSrc.endsWith('.svg') ? 'projects__img--contain' : 'projects__img--cover'}`}
                         loading="lazy"
+                        decoding="async"
                       />
                       <div className="projects__preview-overlay">
                         <span className="projects__quick-view">Quick View</span>

@@ -144,7 +144,7 @@ export default function Hero() {
 
         <a className="hero__hire" href="#contact" onClick={handleAnchorClick}>
           <span className="hero__hire-media">
-            <img src="/profile_icon.jpg" alt="" />
+            <img src="/profile_icon.webp" alt="" />
           </span>
           <span className="hero__hire-body">
             <span className="hero__hire-title">{hero.hireCard.title}</span>

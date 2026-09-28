@@ -5,7 +5,7 @@ export const projects = [
     subtitle: 'EMERGENCY GPS & FLEET IOT',
     description:
       'The Smart Ambulance Tracking and Management System is a web and mobile-based platform that enables real-time GPS tracking of ambulances and centralized management through an admin dashboard. It uses secure authentication, cloud database integration, and API-based communication to ensure efficient driver assignment, route navigation, and live status monitoring.',
-    image: '/medigo.png',
+    image: '/medigo.webp',
     tags: ['Typescript', 'React', 'Next.js', 'Tailwind CSS', 'Google map API', 'Firebase DB', 'Firebase API'],
     liveUrl: 'https://medigoadmin.vercel.app/',
     githubUrl: 'https://github.com/SDGP-03/MediGo',
@@ -18,7 +18,7 @@ export const projects = [
     subtitle: 'ENTERPRISE AUDIT & STOCK SUITE',
     description:
       'A full-featured inventory and stock tracking application featuring product & category management, real-time stock adjustments, audit history logs, and validation workflows.',
-    image: '/inventory.png',
+    image: '/inventory.webp',
     tags: ['React', 'Vite', 'Formik', 'Yup'],
     liveUrl: 'https://inventory-management-system-by-thash.vercel.app/',
     githubUrl: 'https://github.com/realthash/Inventory-Management-System',
@@ -31,7 +31,7 @@ export const projects = [
     subtitle: 'FULL-STACK STORE & CART API',
     description:
       'A complete full-stack e-commerce application featuring a component-driven React frontend client and an Express/Sequelize backend REST API. It supports product search and filtering, real-time cart management, dynamic checkout calculations with delivery option selection, order placement, and delivery status tracking.',
-    image: '/e-commerce.png',
+    image: '/e-commerce.webp',
     tags: ['React', 'Vite', 'Express', 'Node.js', 'REST API', 'CSS3'],
     liveUrl: 'https://e-commerce-beta-mauve.vercel.app/',
     githubUrl: 'https://github.com/realthash/e-commerce',
@@ -44,7 +44,7 @@ export const projects = [
     subtitle: 'AI CONVERSATIONAL AGENT',
     description:
       'An interactive, real-time chatbot web application built with React and Vite that provides automated conversational responses. It features asynchronous API communication with dynamic loading indicators, auto-scrolling message history, keyboard event handling for instant messaging, and a modular component architecture for seamless user-bot interaction.',
-    image: '/chatbot.png',
+    image: '/chatbot.webp',
     tags: ['React', 'JavaScript', 'Vite', 'CSS3', 'Component Architecture'],
     liveUrl: '',
     githubUrl: 'https://github.com/realthash/react-course/tree/main/chatbot-project',
@@ -70,7 +70,7 @@ export const projects = [
     subtitle: 'ECOLOGICAL SUSTAINABILITY HUB',
     description:
       'A responsive front-end interface using modern HTML5 and CSS3 practices to ensure cross-browser compatibility and a responsive user experience.',
-    image: '/BlueSanctuary.PNG',
+    image: '/BlueSanctuary.webp',
     tags: ['HTML5', 'CSS'],
     liveUrl: '#',
     githubUrl: 'https://github.com/realthash/Web-Design-CW',
