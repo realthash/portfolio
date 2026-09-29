@@ -25,13 +25,11 @@
 
 /* Hairline along the angled top cut (skewed with .angled-clip) */
 .contact__angled-line {
-  background: linear-gradient(
-    to right,
-    rgba(224, 20, 30, 0.8) 0%,
-    rgba(224, 20, 30, 0.4) 35%,
-    rgba(255, 255, 255, 0.04) 70%,
-    rgba(224, 20, 30, 0.5) 100%
-  );
+  background: linear-gradient(to right,
+      rgba(224, 20, 30, 0.8) 0%,
+      rgba(224, 20, 30, 0.4) 35%,
+      rgba(255, 255, 255, 0.04) 70%,
+      rgba(224, 20, 30, 0.5) 100%);
 }
 
 /* Background image layer using background.webp */
@@ -114,13 +112,11 @@
 .contact__line {
   flex: 1;
   height: 1px;
-  background: linear-gradient(
-    90deg,
-    rgba(224, 20, 30, 0.5) 0%,
-    rgba(255, 255, 255, 0.25) 30%,
-    rgba(255, 255, 255, 0.12) 80%,
-    transparent 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(224, 20, 30, 0.5) 0%,
+      rgba(255, 255, 255, 0.25) 30%,
+      rgba(255, 255, 255, 0.12) 80%,
+      transparent 100%);
   margin: 0 clamp(16px, 3vw, 48px);
   transform-origin: left center;
 }
@@ -148,10 +144,13 @@
 }
 
 @keyframes contact-pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 1;
     transform: scale(1);
   }
+
   50% {
     opacity: 0.4;
     transform: scale(0.85);
@@ -409,6 +408,7 @@ p.char-stagger-root {
     opacity: 0;
     transform: translateY(-4px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -618,10 +618,9 @@ p.char-stagger-root {
 
 /* ---------- Footer ---------- */
 .contact__footer {
-  margin-top: clamp(64px, 10vh, 110px);
+  margin-top: clamp(24px, 4vh, 48px);
   text-align: center;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
-  padding-top: 28px;
 }
 
 .contact__footer p {
@@ -657,6 +656,7 @@ p.char-stagger-root {
 }
 
 @media (max-width: 640px) {
+
   /* Keep --contact-angle-h at 120px: the angled edge in Contact.jsx starts at a 120px cut,
      so a smaller overlap here would leave a see-through band under the wedge. */
   .contact__card {
