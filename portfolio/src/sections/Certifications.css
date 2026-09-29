@@ -215,19 +215,58 @@
   box-sizing: border-box;
 }
 
-.certifications__container--carousel {
-  overflow: hidden;
+/* Native horizontal scroller with snap points. The track bleeds into the
+   gutters (negative margin + matching padding) so card shadows and the hover
+   lift aren't clipped, while cards still line up with the header. */
+.certifications__container--carousel .certifications__track {
+  --card-gap: clamp(16px, 2.2vw, 32px);
+  position: relative;
+  display: flex;
+  gap: var(--card-gap);
+  overflow-x: auto;
+  /* overflow-x: auto would otherwise compute overflow-y to auto too, and the
+     cards' 50px entrance offset then briefly turns the row into a vertical
+     scroller (a red bar at the screen edge that also swallows the wheel) */
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--gutter);
+  margin: -16px calc(-1 * var(--gutter)) 0;
+  padding: 16px var(--gutter) 28px;
 }
 
-.certifications__container--carousel .certifications__track {
-  display: flex;
-  gap: clamp(16px, 2.2vw, 32px);
-  transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+/* Standard scrollbar props only where ::-webkit-scrollbar is unsupported
+   (Firefox) — Chrome ignores the rounded, inset webkit styling if they're set */
+@supports not selector(::-webkit-scrollbar) {
+  .certifications__container--carousel .certifications__track {
+    scrollbar-width: thin;
+    scrollbar-color: var(--c-red) rgba(17, 24, 39, 0.1);
+  }
+}
+
+.certifications__container--carousel .certifications__track::-webkit-scrollbar {
+  height: 6px;
+}
+
+.certifications__container--carousel .certifications__track::-webkit-scrollbar-track {
+  margin-inline: var(--gutter);
+  border-radius: 999px;
+  background: rgba(17, 24, 39, 0.1);
+}
+
+.certifications__container--carousel .certifications__track::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: var(--c-red);
 }
 
 .certifications__container--carousel .certifications__card {
-  flex: 0 0 calc((100% - 2 * clamp(16px, 2.2vw, 32px)) / 3);
-  min-width: 290px;
+  flex: 0 0 calc((100% - 2 * var(--card-gap)) / 3);
+  scroll-snap-align: start;
+}
+
+/* No hover effects while the row is moving (class set by useHorizontalScroller) */
+.certifications__track.is-scrolling .certifications__card {
+  pointer-events: none;
 }
 
 .certifications__container--grid .certifications__track {
@@ -358,12 +397,14 @@
   align-items: center;
   justify-content: center;
   opacity: 0;
-  backdrop-filter: blur(2px);
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease, backdrop-filter 0.3s ease;
 }
 
+/* Blur only while hovered: an always-on backdrop-filter keeps a costly blur
+   layer alive on every card even at opacity 0, slowing every scroll frame */
 .certifications__card:hover .certifications__preview-overlay {
   opacity: 1;
+  backdrop-filter: blur(2px);
 }
 
 .certifications__quick-view {
@@ -682,7 +723,7 @@
 /* ---------- Responsive Breakpoints ---------- */
 @media (max-width: 1080px) {
   .certifications__container--carousel .certifications__card {
-    flex: 0 0 calc((100% - clamp(16px, 2.2vw, 32px)) / 2);
+    flex: 0 0 calc((100% - var(--card-gap)) / 2);
   }
 
   .certifications__container--grid .certifications__track {
@@ -700,8 +741,9 @@
     gap: 12px;
   }
 
+  /* Leave the next card peeking in so the row reads as swipeable */
   .certifications__container--carousel .certifications__card {
-    flex: 0 0 100%;
+    flex: 0 0 85%;
   }
 
   .certifications__container--grid .certifications__track {

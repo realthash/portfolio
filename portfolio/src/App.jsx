@@ -72,6 +72,24 @@ export default function App() {
     };
   }, []);
 
+  // Sections can change height at runtime (e.g. a "view all" grid expanding), which shifts every
+  // trigger below them. ScrollTrigger only re-measures on window resize, so do it on height changes.
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return undefined;
+
+    let lastHeight = container.offsetHeight;
+    const observer = new ResizeObserver(() => {
+      const height = container.offsetHeight;
+      if (height === lastHeight) return;
+      lastHeight = height;
+      ScrollTrigger.refresh();
+    });
+    observer.observe(container);
+
+    return () => observer.disconnect();
+  }, []);
+
   useGSAP(
     () => {
       // Smooth depth parallax on pinned hero as projects section slides over it

@@ -2,8 +2,10 @@ import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { projects } from '../data/projects.js';
 import { gsap, ScrollTrigger, useGSAP } from '../lib/gsap.js';
-import { useScrollLock } from '../lib/scrollLock.js';
+import { useScrollLock, scrollToTarget } from '../lib/scrollLock.js';
 import { animateAngledEdge } from '../lib/angledEdge.js';
+import { useHorizontalScroller } from '../lib/useHorizontalScroller.js';
+import { cardSrcSet, CARD_IMAGE_SIZES } from '../lib/cardImage.js';
 import background from '../assets/background.webp';
 import './Projects.css';
 
@@ -52,10 +54,7 @@ export default function Projects() {
   const [selectedProject, setSelectedProject] = useState(null);
   const [themeOverrides, setThemeOverrides] = useState({});
   const [viewAll, setViewAll] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  // Maximum index for carousel (showing 3 cards on desktop)
-  const maxIndex = Math.max(0, projects.length - 3);
+  const scroller = useHorizontalScroller(trackRef, { enabled: !viewAll });
 
   // GSAP ScrollTrigger entrance & morph animations
   useGSAP(
@@ -99,6 +98,8 @@ export default function Projects() {
           duration: 0.9,
           stagger: 0.12,
           ease: 'power3.out',
+          // Drop the inline transform once settled so the CSS :hover lift applies
+          clearProps: 'transform',
           scrollTrigger: {
             trigger: el,
             start: 'top 75%',
@@ -121,29 +122,37 @@ export default function Projects() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  const toggleTheme = (e, projId) => {
+  // Move focus into the modal on open and hand it back to the card on close
+  const modalCloseRef = useRef(null);
+  useEffect(() => {
+    if (!selectedProject) return undefined;
+    const opener = document.activeElement;
+    modalCloseRef.current?.focus();
+    return () => opener?.focus?.({ preventScroll: true });
+  }, [selectedProject]);
+
+  // Collapsing the grid while scrolled into it would leave the reader further down the page
+  const toggleViewAll = () => {
+    if (viewAll && rootRef.current.getBoundingClientRect().top < 0) scrollToTarget(rootRef.current);
+    setViewAll((v) => !v);
+  };
+
+  // One source of truth for a card's mode: the user's override, else its default
+  const getMode = (proj) => themeOverrides[proj.id] || proj.theme || 'dark';
+
+  const toggleTheme = (e, proj) => {
     e.stopPropagation();
-    setThemeOverrides((prev) => ({
-      ...prev,
-      [projId]: prev[projId] === 'dark' ? 'light' : 'dark',
-    }));
+    const next = getMode(proj) === 'dark' ? 'light' : 'dark';
+    setThemeOverrides((prev) => ({ ...prev, [proj.id]: next }));
   };
 
   const getCurrentImage = (proj) => {
     if (typeof proj.image === 'string') return proj.image;
-    const currentMode = themeOverrides[proj.id] || proj.theme || 'dark';
+    const currentMode = getMode(proj);
     return proj.image[currentMode] || proj.image.dark || proj.image.light;
   };
 
   const hasMultipleThemes = (proj) => typeof proj.image === 'object' && proj.image.light && proj.image.dark;
-
-  const nextSlide = () => {
-    setActiveIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
-  };
-
-  const prevSlide = () => {
-    setActiveIndex((prev) => (prev <= 0 ? maxIndex : prev - 1));
-  };
 
   return (
     <section className="projects" ref={rootRef} id="projects" aria-label="Selected Projects">
@@ -163,7 +172,7 @@ export default function Projects() {
           <button
             type="button"
             className={`projects__view-all ${viewAll ? 'is-active' : ''}`}
-            onClick={() => setViewAll((v) => !v)}
+            onClick={toggleViewAll}
             aria-label={viewAll ? 'Show 3 featured projects' : 'View all projects'}
           >
             <span>{viewAll ? 'SHOW FEATURED' : 'VIEW ALL PROJECTS'}</span>
@@ -175,24 +184,24 @@ export default function Projects() {
         {!viewAll && (
           <div className="projects__nav-bar">
             <span className="projects__counter">
-              Showing <strong>{activeIndex + 1}–{Math.min(activeIndex + 3, projects.length)}</strong> of {projects.length}
+              Showing <strong>{scroller.first + 1}{scroller.last > scroller.first ? `–${scroller.last + 1}` : ''}</strong> of {projects.length}
             </span>
             <div className="projects__nav-arrows">
               <button
                 type="button"
                 className="projects__nav-btn"
-                onClick={prevSlide}
+                onClick={() => scroller.scrollByCard(-1)}
                 aria-label="Previous projects"
-                disabled={activeIndex === 0}
+                disabled={scroller.atStart}
               >
                 ←
               </button>
               <button
                 type="button"
                 className="projects__nav-btn"
-                onClick={nextSlide}
+                onClick={() => scroller.scrollByCard(1)}
                 aria-label="Next projects"
-                disabled={activeIndex >= maxIndex}
+                disabled={scroller.atEnd}
               >
                 →
               </button>
@@ -206,17 +215,10 @@ export default function Projects() {
         <div
           className="projects__track"
           ref={trackRef}
-          style={
-            !viewAll
-              ? {
-                  transform: `translateX(-${activeIndex * (100 / 3)}%)`,
-                }
-              : undefined
-          }
         >
           {projects.map((proj) => {
             const imgSrc = getCurrentImage(proj);
-            const isDarkCard = proj.theme === 'dark' || themeOverrides[proj.id] === 'dark';
+            const isDarkCard = getMode(proj) === 'dark';
 
             return (
               <article
@@ -227,6 +229,8 @@ export default function Projects() {
                 role="button"
                 aria-label={`View details for ${proj.title}`}
                 onKeyDown={(e) => {
+                  // Ignore keys bubbling up from the nested theme toggle button
+                  if (e.target !== e.currentTarget) return;
                   if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
                     setSelectedProject(proj);
@@ -248,11 +252,11 @@ export default function Projects() {
                         <button
                           type="button"
                           className="projects__theme-toggle"
-                          onClick={(e) => toggleTheme(e, proj.id)}
+                          onClick={(e) => toggleTheme(e, proj)}
                           title="Toggle dark/light preview"
                           aria-label="Toggle preview theme"
                         >
-                          {themeOverrides[proj.id] === 'light' ? '🌙 Dark' : '☀️ Light'}
+                          {isDarkCard ? '☀️ Light' : '🌙 Dark'}
                         </button>
                       )}
                     </div>
@@ -261,6 +265,8 @@ export default function Projects() {
                     <div className="projects__preview-stage">
                       <img
                         src={imgSrc}
+                        srcSet={cardSrcSet(imgSrc)}
+                        sizes={CARD_IMAGE_SIZES}
                         alt={`${proj.title} preview`}
                         className={`projects__img ${imgSrc.endsWith('.svg') ? 'projects__img--contain' : 'projects__img--cover'}`}
                         loading="lazy"
@@ -324,6 +330,7 @@ export default function Projects() {
             data-lenis-prevent
           >
             <button
+              ref={modalCloseRef}
               type="button"
               className="projects__modal-close"
               onClick={() => setSelectedProject(null)}

@@ -2,8 +2,10 @@ import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { certifications } from '../data/certifications.js';
 import { gsap, ScrollTrigger, useGSAP } from '../lib/gsap.js';
-import { useScrollLock } from '../lib/scrollLock.js';
+import { useScrollLock, scrollToTarget } from '../lib/scrollLock.js';
 import { animateAngledEdge } from '../lib/angledEdge.js';
+import { useHorizontalScroller } from '../lib/useHorizontalScroller.js';
+import { cardSrcSet, CARD_IMAGE_SIZES } from '../lib/cardImage.js';
 import './Certifications.css';
 
 function ArrowIcon({ className = '' }) {
@@ -50,10 +52,8 @@ export default function Certifications() {
   const edgeInnerRef = useRef(null);
   const [selectedCert, setSelectedCert] = useState(null);
   const [viewAll, setViewAll] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  // Maximum index for carousel (showing 3 cards on desktop)
-  const maxIndex = Math.max(0, certifications.length - 3);
+  const scroller = useHorizontalScroller(trackRef, { enabled: !viewAll });
+  const modalCloseRef = useRef(null);
 
   // GSAP ScrollTrigger entrance & morph animations with side-flipped starting bar
   useGSAP(
@@ -97,6 +97,8 @@ export default function Certifications() {
           duration: 0.9,
           stagger: 0.12,
           ease: 'power3.out',
+          // Drop the inline transform once settled so the CSS :hover lift applies
+          clearProps: 'transform',
           scrollTrigger: {
             trigger: el,
             start: 'top 75%',
@@ -119,12 +121,18 @@ export default function Certifications() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  const nextSlide = () => {
-    setActiveIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
-  };
+  // Move focus into the modal on open and hand it back to the card on close
+  useEffect(() => {
+    if (!selectedCert) return undefined;
+    const opener = document.activeElement;
+    modalCloseRef.current?.focus();
+    return () => opener?.focus?.({ preventScroll: true });
+  }, [selectedCert]);
 
-  const prevSlide = () => {
-    setActiveIndex((prev) => (prev <= 0 ? maxIndex : prev - 1));
+  // Collapsing the grid while scrolled into it would leave the reader further down the page
+  const toggleViewAll = () => {
+    if (viewAll && rootRef.current.getBoundingClientRect().top < 0) scrollToTarget(rootRef.current);
+    setViewAll((v) => !v);
   };
 
   return (
@@ -149,7 +157,7 @@ export default function Certifications() {
           <button
             type="button"
             className={`certifications__view-all ${viewAll ? 'is-active' : ''}`}
-            onClick={() => setViewAll((v) => !v)}
+            onClick={toggleViewAll}
             aria-label={viewAll ? 'Show 3 featured certificates' : 'View all certificates'}
           >
             <span>{viewAll ? 'SHOW FEATURED' : 'VIEW ALL CERTIFICATES'}</span>
@@ -161,24 +169,24 @@ export default function Certifications() {
         {!viewAll && (
           <div className="certifications__nav-bar">
             <span className="certifications__counter">
-              Showing <strong>{activeIndex + 1}–{Math.min(activeIndex + 3, certifications.length)}</strong> of {certifications.length}
+              Showing <strong>{scroller.first + 1}{scroller.last > scroller.first ? `–${scroller.last + 1}` : ''}</strong> of {certifications.length}
             </span>
             <div className="certifications__nav-arrows">
               <button
                 type="button"
                 className="certifications__nav-btn"
-                onClick={prevSlide}
+                onClick={() => scroller.scrollByCard(-1)}
                 aria-label="Previous certificates"
-                disabled={activeIndex === 0}
+                disabled={scroller.atStart}
               >
                 ←
               </button>
               <button
                 type="button"
                 className="certifications__nav-btn"
-                onClick={nextSlide}
+                onClick={() => scroller.scrollByCard(1)}
                 aria-label="Next certificates"
-                disabled={activeIndex >= maxIndex}
+                disabled={scroller.atEnd}
               >
                 →
               </button>
@@ -192,13 +200,6 @@ export default function Certifications() {
         <div
           className="certifications__track"
           ref={trackRef}
-          style={
-            !viewAll
-              ? {
-                  transform: `translateX(-${activeIndex * (100 / 3)}%)`,
-                }
-              : undefined
-          }
         >
           {certifications.map((cert) => (
             <article
@@ -238,6 +239,8 @@ export default function Certifications() {
                   <div className="certifications__preview-stage">
                     <img
                       src={cert.image}
+                      srcSet={cardSrcSet(cert.image)}
+                      sizes={CARD_IMAGE_SIZES}
                       alt={`${cert.title} credential`}
                       className="certifications__img"
                       loading="lazy"
@@ -304,6 +307,7 @@ export default function Certifications() {
             data-lenis-prevent
           >
             <button
+              ref={modalCloseRef}
               type="button"
               className="certifications__modal-close"
               onClick={() => setSelectedCert(null)}
