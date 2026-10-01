@@ -1,15 +1,15 @@
 // All hero copy lives here so text can change without touching layout code.
 export const hero = {
-  role: 'Full-Stack Developer',
-  roleSub: 'DevOps Culture',
-  availability: 'Available for opportunities',
+  role: 'Software Engineer',
+  roleSub: 'Full-Stack • DevOps • UI/UX',
+  availability: 'Open for Internship Opportunities',
   greeting: "Hello, I'm",
   name: 'Thashmika Rathnayake',
-  title: 'Full-Stack Developer',
-  bio: 'I build fast, reliable web applications that are user-centered, visually polished and engineered to solve real problems. From database to interface, I craft products that scale and perform.',
+  title: 'Software Engineer & Builder',
+  bio: 'A software engineering undergraduate passionate about building scalable web applications, automated workflows, and intuitive user experiences. Driven by end-to-end product thinking from requirement analysis and design to robust engineering and cloud deployment.',
   location: 'Based in Sri Lanka',
-  tagline: 'Turning ideas into powerful digital products.',
-  skills: ['End-to-End Development', 'Scalable Architecture', 'Responsive Design'],
+  tagline: 'Bridging engineering rigor, user experience, and modern DevOps.',
+  skills: ['Full-Stack Engineering', 'Cloud & CI/CD Pipelines', 'UI/UX & Product Design'],
   nav: [
     { label: 'Home', href: '#top' },
     { label: 'Projects', href: '#projects' },
