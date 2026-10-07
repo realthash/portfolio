@@ -1,16 +1,16 @@
 export const certifications = [
   {
     id: '01',
-    title: 'Introduction to DevOps',
+    title: 'Hands-on Introduction to Linux Commands and Shell Scripting',
     issuer: 'IBM',
     subtitle: 'AUTHORIZED BY IBM (COURSERA)',
-    date: 'September 2026',
+    date: 'October 2026',
     domain: 'coursera.org',
-    link: 'https://www.coursera.org/verify/RQAPHMC1OCEC',
-    image: '/CERTIFICATE_LANDING_PAGE~RQAPHMC1OCEC.webp',
-    tags: ['DevOps', 'CI/CD', 'Docker', 'Infrastructure as Code'],
+    link: 'https://www.coursera.org/account/accomplishments/verify/0AZTIJHH1FFG',
+    image: '/CERTIFICATE_LANDING_PAGE~0AZTIJHH1FFG.webp',
+    tags: ['Linux Commands', 'Bash Scripting', 'Linux Administration', 'Shell Scripting', 'Crontab Automation'],
     description:
-      'Completed Coursera\'s "Introduction to DevOps" course, gaining hands-on experience with Continuous Integration/Continuous Delivery (CI/CD), Infrastructure as Code, and Docker containerization. Learned how to automate deployments, build resilient cloud-native applications, and foster a DevOps culture of collaboration and shared responsibility. Earned a shareable certificate demonstrating foundational DevOps skills applicable to modern software engineering and system reliability.',
+      'Completed IBM\'s "Hands-on Introduction to Linux Commands and Shell Scripting" course on Coursera. Gained practical experience with Linux architecture, distributions, package management, and navigating the Bash shell using core informational, file management, compression, and networking commands. Developed modular shell scripts leveraging environment variables, pipes, and filters, and automated scheduled tasks using crontab and cron syntax.',
     featured: true,
   },
   {
@@ -29,6 +29,20 @@ export const certifications = [
   },
   {
     id: '03',
+    title: 'Introduction to DevOps',
+    issuer: 'IBM',
+    subtitle: 'AUTHORIZED BY IBM (COURSERA)',
+    date: 'September 2026',
+    domain: 'coursera.org',
+    link: 'https://www.coursera.org/verify/RQAPHMC1OCEC',
+    image: '/CERTIFICATE_LANDING_PAGE~RQAPHMC1OCEC.webp',
+    tags: ['DevOps', 'CI/CD', 'Docker', 'Infrastructure as Code'],
+    description:
+      'Completed Coursera\'s "Introduction to DevOps" course, gaining hands-on experience with Continuous Integration/Continuous Delivery (CI/CD), Infrastructure as Code, and Docker containerization. Learned how to automate deployments, build resilient cloud-native applications, and foster a DevOps culture of collaboration and shared responsibility. Earned a shareable certificate demonstrating foundational DevOps skills applicable to modern software engineering and system reliability.',
+    featured: true,
+  },
+  {
+    id: '04',
     title: 'IIT Summer School 2.0',
     issuer: 'Informatics Institute of Technology',
     subtitle: 'INFORMATICS INSTITUTE OF TECHNOLOGY',
@@ -42,7 +56,7 @@ export const certifications = [
     featured: true,
   },
   {
-    id: '04',
+    id: '05',
     title: 'AI Fundamentals',
     issuer: 'Google',
     subtitle: 'AUTHORIZED BY GOOGLE (COURSERA)',
@@ -56,7 +70,7 @@ export const certifications = [
     featured: true,
   },
   {
-    id: '05',
+    id: '06',
     title: 'AI for Brainstorming and Planning',
     issuer: 'Google',
     subtitle: 'AUTHORIZED BY GOOGLE (COURSERA)',
